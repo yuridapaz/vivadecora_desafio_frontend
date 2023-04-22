@@ -4,16 +4,27 @@ const StyledCard = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid blue;
+  border-radius: 5px;
   transform: rotateY(180deg);
   animation: 2s hideCard linear;
+  background: linear-gradient(135deg, #eceddc 25%, transparent 25%),
+    linear-gradient(225deg, #eceddc 25%, transparent 25%),
+    linear-gradient(315deg, #eceddc 25%, transparent 25%),
+    linear-gradient(45deg, #eceddc 25%, transparent 25%);
+  background-size: 30px 30px;
 
   @keyframes hideCard {
     0%,
     70% {
+      background: #fff;
       transform: rotateY(0deg);
     }
     100% {
+      background: linear-gradient(135deg, #eceddc 25%, transparent 25%),
+        linear-gradient(225deg, #eceddc 25%, transparent 25%),
+        linear-gradient(315deg, #eceddc 25%, transparent 25%),
+        linear-gradient(45deg, #eceddc 25%, transparent 25%);
+      background-size: 30px 30px;
       transform: rotateY(180deg);
     }
   }
