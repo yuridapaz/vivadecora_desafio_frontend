@@ -3,7 +3,7 @@ import { CardComponent } from './CardComponent';
 import { useState } from 'react';
 
 // Mock
-const listaDeEmojis = [
+const emojiList = [
   '9200',
   '9889',
   '9917',
@@ -71,21 +71,21 @@ export const BoardEasy = () => {
   const [movements, setMovements] = useState(0);
 
   const handleCards = () => {
-    const shuffleEmojis = [...listaDeEmojis].sort(() => Math.random() - 0.5);
+    const shuffleEmojis = [...emojiList].sort(() => Math.random() - 0.5);
   };
 
   handleCards();
   return (
     <BoardEasyStyle>
       <div className='upper_content'>
-        <p className='movements'>X movimento</p>
+        <p className='movements'>{movements} movimentos</p>
         <span className='upper_icon'>🔄</span>
       </div>
       <div className='board_container'>
-        <CardComponent>{String.fromCodePoint(listaDeEmojis[2])}</CardComponent>
-        <CardComponent>{String.fromCodePoint(listaDeEmojis[59])}</CardComponent>
-        <CardComponent>{String.fromCodePoint(listaDeEmojis[32])}</CardComponent>
-        <CardComponent>{String.fromCodePoint(listaDeEmojis[30])}</CardComponent>
+        <CardComponent>{String.fromCodePoint(emojiList[2])}</CardComponent>
+        <CardComponent>{String.fromCodePoint(emojiList[59])}</CardComponent>
+        <CardComponent>{String.fromCodePoint(emojiList[32])}</CardComponent>
+        <CardComponent>{String.fromCodePoint(emojiList[30])}</CardComponent>
       </div>
       <div className='lower_content'>
         <p className='difficulty'>
@@ -97,10 +97,8 @@ export const BoardEasy = () => {
 };
 
 const BoardEasyStyle = styled.div`
-  width: 80%;
-  max-width: 400px;
-  height: 400px;
   color: #fff;
+  width: 300px;
 
   .upper_content {
     display: flex;
@@ -108,15 +106,14 @@ const BoardEasyStyle = styled.div`
     padding: 0 20px;
     font-size: 1.2rem;
     font-weight: 700;
-
     .upper_icon {
       font-size: 1.5rem;
     }
   }
 
   .board_container {
-    width: 100%;
-    height: 100%;
+    width: 300px;
+    height: 300px;
     padding: 1rem;
     background-color: #fff;
     border-radius: 5px;
