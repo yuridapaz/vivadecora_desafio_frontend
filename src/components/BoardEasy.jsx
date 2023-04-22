@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
 import { CardComponent } from './CardComponent';
 import { useState } from 'react';
@@ -67,25 +68,30 @@ const emojiList = [
 ];
 
 export const BoardEasy = () => {
-  const [cards, setCards] = useState([]);
+  const [cards, setCards] = useState(['127851', '127868', '127851', '127868']);
+  // eslint-disable-next-line no-unused-vars
   const [movements, setMovements] = useState(0);
 
   const handleCards = () => {
-    const shuffleEmojis = [...emojiList].sort(() => Math.random() - 0.5);
+    setMovements(movements + 1);
+
+    console.log(cards);
+    return;
   };
 
-  handleCards();
   return (
     <BoardEasyStyle>
       <div className='upper_content'>
         <p className='movements'>{movements} movimentos</p>
-        <span className='upper_icon'>🔄</span>
+        <span className='upper_icon' onClick={handleCards}>
+          🔄
+        </span>
       </div>
       <div className='board_container'>
-        <CardComponent>{String.fromCodePoint(emojiList[2])}</CardComponent>
-        <CardComponent>{String.fromCodePoint(emojiList[59])}</CardComponent>
-        <CardComponent>{String.fromCodePoint(emojiList[32])}</CardComponent>
-        <CardComponent>{String.fromCodePoint(emojiList[30])}</CardComponent>
+        {cards &&
+          cards.map((elem) => {
+            return <CardComponent key={elem}>{String.fromCodePoint(elem)}</CardComponent>;
+          })}
       </div>
       <div className='lower_content'>
         <p className='difficulty'>
