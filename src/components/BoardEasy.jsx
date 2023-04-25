@@ -70,94 +70,68 @@ const emojiList = [
 
 export const BoardEasy = () => {
   const [cards, setCards] = useState([
-    {
-      hex: '128022',
-      status: '',
-    },
-    {
-      hex: '128153',
-      status: '',
-    },
-    {
-      hex: '128153',
-      status: '',
-    },
-    {
-      hex: '128022',
-      status: '',
-    },
+    { hexCode: '127890', matched: false },
+    { hexCode: '127929', matched: false },
+    { hexCode: '127952', matched: false },
+    { hexCode: '127952', matched: false },
   ]);
-
   const [movements, setMovements] = useState(0);
-  const [prev, setPrev] = useState(-1);
+  const [choiceOne, setChoiceOne] = useState(null);
+  const [choiceTwo, setChoiceTwo] = useState(null);
+  const [flipped, setFlipped] = useState(false);
 
-  useEffect(() => {
-    // handleCards();
-  }, []);
-
-  const handleCards = () => {
-    const newEmojis = sortAndFindEmojis();
-    // Pegar os elementos criados e fazer mais um sort() para o jogo de memória
-    const newSortCards = [...newEmojis, ...newEmojis].sort(() => Math.random() - 0.5);
-    setCards(newSortCards);
-    return;
-  };
-
-  const sortAndFindEmojis = () => {
+  // sortCards
+  const shuffleCards = () => {
     const newEmojis = emojiList
       // Sort() a lista completa de emojis para ter muitas opções
       .sort(() => Math.random() - 0.5)
       // Pegar os 2 primeiros elementos da lista
       .slice(0, 2)
       // Modificar os elementos e trazer a chave 'status'
-      .map((emoji) => ({ hex: emoji, status: '' }));
-    return newEmojis;
+      .map((emoji) => ({ hexCode: emoji, matched: false }));
+
+    // Pega os 2 emojis selecionados, adiciona a lista do jogo e faz um novo sort()
+    const newGameEmojis = [...newEmojis, ...newEmojis].sort(() => Math.random() - 0.5);
+
+    // Atualiza o estado com os novos cards com emojis
+    setCards(newGameEmojis);
+    setMovements(0);
+    return;
   };
 
-  const check = (current) => {
-    if (current.hex == prev.hex) {
-      current.status = 'correct';
-      prev.status = 'correct';
-      setPrev(-1);
-    } else {
-      current.status = 'wrong';
-      prev.status = 'wrong';
-      setCards([...cards]);
-
-      setTimeout(() => {
-        current.status = '';
-        prev.status = '';
-        setCards([...cards]);
-        setPrev(-1);
-      }, 1000);
-    }
+  // handleClick
+  const handleChoice = (card) => {
+    choiceOne ? setChoiceOne(card) : setChoiceTwo(card);
   };
 
-  const handleClick = (currentCard) => {
-    if (prev === -1) {
-      currentCard.status = 'active';
-      setCards([...cards]);
-      setPrev(currentCard);
-    } else {
-      check(currentCard);
-    }
-    console.log(currentCard);
+  // resetTurn
+  const resetTurn = () => {
+    setChoiceOne(null);
+    setChoiceTwo(null);
+    setMovements((prev) => prev + 1);
   };
+
+  useEffect(() => {}, []);
 
   return (
     <BoardEasyStyle>
       <div className='upper_content'>
         <p className='movements'>{movements} movimentos</p>
-        <button className='restart_icon' onClick={handleCards}>
+        <button className='restart_icon' onClick={shuffleCards}>
           🔄
         </button>
       </div>
       <div className='board_container'>
         {cards &&
-          cards.map((item) => {
+          cards.map((card) => {
             return (
-              <CardComponent key={Math.random()} onClick={() => handleClick(item)} item={item}>
-                {String.fromCodePoint(item.hex)}
+              <CardComponent
+                key={Math.random()}
+                card={card}
+                flipped={flipped}
+                handleChoice={handleChoice}
+              >
+                {String.fromCodePoint(card.hexCode)}
               </CardComponent>
             );
           })}
@@ -167,6 +141,9 @@ export const BoardEasy = () => {
           Nível: <span>Fácil - 14</span>
         </p>
       </div>
+      <button className='restart_icon' onClick={shuffleCards}>
+        RESET GAME
+      </button>
     </BoardEasyStyle>
   );
 };
@@ -187,6 +164,7 @@ const BoardEasyStyle = styled.div`
       outline: none;
       border: none;
       font-size: 1.5rem;
+      cursor: pointer;
     }
   }
 
