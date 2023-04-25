@@ -16,16 +16,8 @@ const router = createBrowserRouter([
         element: <BoardLevels />,
       },
       {
-        path: '/facil',
+        path: 'facil',
         element: <BoardEasy />,
-      },
-      {
-        path: '/medio',
-        // element: ,
-      },
-      {
-        path: '/dificil',
-        // element: ,
       },
     ],
   },

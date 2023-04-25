@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
-import { CardComponent } from './CardComponent';
 import { useState } from 'react';
+import { useEffect } from 'react';
+import { CardComponent } from './CardComponent';
 
 // Mock
 const emojiList = [
@@ -68,29 +69,97 @@ const emojiList = [
 ];
 
 export const BoardEasy = () => {
-  const [cards, setCards] = useState(['127851', '127868', '127851', '127868']);
-  // eslint-disable-next-line no-unused-vars
+  const [cards, setCards] = useState([
+    {
+      hex: '128022',
+      status: '',
+    },
+    {
+      hex: '128153',
+      status: '',
+    },
+    {
+      hex: '128153',
+      status: '',
+    },
+    {
+      hex: '128022',
+      status: '',
+    },
+  ]);
+
   const [movements, setMovements] = useState(0);
+  const [prev, setPrev] = useState(-1);
+
+  useEffect(() => {
+    // handleCards();
+  }, []);
 
   const handleCards = () => {
-    setMovements(movements + 1);
-
-    console.log(cards);
+    const newEmojis = sortAndFindEmojis();
+    // Pegar os elementos criados e fazer mais um sort() para o jogo de memória
+    const newSortCards = [...newEmojis, ...newEmojis].sort(() => Math.random() - 0.5);
+    setCards(newSortCards);
     return;
+  };
+
+  const sortAndFindEmojis = () => {
+    const newEmojis = emojiList
+      // Sort() a lista completa de emojis para ter muitas opções
+      .sort(() => Math.random() - 0.5)
+      // Pegar os 2 primeiros elementos da lista
+      .slice(0, 2)
+      // Modificar os elementos e trazer a chave 'status'
+      .map((emoji) => ({ hex: emoji, status: '' }));
+    return newEmojis;
+  };
+
+  const check = (current) => {
+    if (current.hex == prev.hex) {
+      current.status = 'correct';
+      prev.status = 'correct';
+      setPrev(-1);
+    } else {
+      current.status = 'wrong';
+      prev.status = 'wrong';
+      setCards([...cards]);
+
+      setTimeout(() => {
+        current.status = '';
+        prev.status = '';
+        setCards([...cards]);
+        setPrev(-1);
+      }, 1000);
+    }
+  };
+
+  const handleClick = (currentCard) => {
+    if (prev === -1) {
+      currentCard.status = 'active';
+      setCards([...cards]);
+      setPrev(currentCard);
+    } else {
+      check(currentCard);
+    }
+    console.log(currentCard);
   };
 
   return (
     <BoardEasyStyle>
       <div className='upper_content'>
         <p className='movements'>{movements} movimentos</p>
-        <span className='upper_icon' onClick={handleCards}>
+        <button className='restart_icon' onClick={handleCards}>
           🔄
-        </span>
+        </button>
       </div>
       <div className='board_container'>
         {cards &&
-          cards.map((elem) => {
-            return <CardComponent key={elem}>{String.fromCodePoint(elem)}</CardComponent>;
+          cards.map((item) => {
+            return (
+              <CardComponent key={Math.random()} onClick={() => handleClick(item)} item={item}>
+                {String.fromCodePoint(item.hex)}
+              </CardComponent>
+            );
           })}
       </div>
       <div className='lower_content'>
@@ -105,6 +174,7 @@ export const BoardEasy = () => {
 const BoardEasyStyle = styled.div`
   color: #fff;
   width: 300px;
+  height: 400px;
 
   .upper_content {
     display: flex;
@@ -112,7 +182,10 @@ const BoardEasyStyle = styled.div`
     padding: 0 20px;
     font-size: 1.2rem;
     font-weight: 700;
-    .upper_icon {
+    .restart_icon {
+      background: none;
+      outline: none;
+      border: none;
       font-size: 1.5rem;
     }
   }
