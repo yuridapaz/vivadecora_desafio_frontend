@@ -69,12 +69,7 @@ const emojiList = [
 ];
 
 export const BoardEasy = () => {
-  const [cards, setCards] = useState([
-    { hexCode: '127890', matched: false, id: Math.random() },
-    { hexCode: '127890', matched: false, id: Math.random() },
-    { hexCode: '127952', matched: false, id: Math.random() },
-    { hexCode: '127952', matched: false, id: Math.random() },
-  ]);
+  const [cards, setCards] = useState([]);
   const [movements, setMovements] = useState(0);
   const [choiceOne, setChoiceOne] = useState(null);
   const [choiceTwo, setChoiceTwo] = useState(null);
@@ -86,18 +81,11 @@ export const BoardEasy = () => {
 
   // sortCards
   const shuffleCards = () => {
-    const newEmojis = emojiList
-      // Sort() a lista completa de emojis para ter muitas opções
-      .sort(() => Math.random() - 0.5)
-      // Pegar os 2 primeiros elementos da lista
-      .slice(0, 2);
-    // Modificar os elementos e trazer a chave 'status'
-    // .map((emoji) => ({ hexCode: emoji, matched: false }));
-    // Pega os 2 emojis selecionados, adiciona a lista do jogo e faz um novo sort()
+    const newEmojis = emojiList.sort(() => Math.random() - 0.5).slice(0, 2);
     const newGameEmojis = [...newEmojis, ...newEmojis]
       .sort(() => Math.random() - 0.5)
       .map((emoji) => ({ hexCode: emoji, matched: false, id: Math.random() }));
-    // Atualiza o estado com os novos cards com emojis
+
     setCards(newGameEmojis);
     setMovements(0);
     return;
@@ -109,7 +97,7 @@ export const BoardEasy = () => {
     choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
   };
 
-  //
+  // handleChoice
   useEffect(() => {
     if (choiceOne && choiceTwo) {
       if (choiceOne.hexCode === choiceTwo.hexCode) {
