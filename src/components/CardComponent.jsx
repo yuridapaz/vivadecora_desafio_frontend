@@ -1,40 +1,50 @@
 /* eslint-disable react/prop-types */
 import styled from 'styled-components';
 
-export const CardComponent = ({ children, handleChoice, flipped, card }) => {
+export const CardComponent = ({ children, handleChoice, flipped, card, wrong }) => {
+  const handleClick = () => {
+    handleChoice(card);
+  };
+
   return (
     <StyledCard className={flipped ? 'flipped' : ''}>
-      <div className='front'> {children} </div>
-      <div className='back' onClick={() => handleChoice(card)}></div>
+      <div className={`front ${card.matched ? 'matched' : ''} ${wrong ? 'wrong' : ''}  `}>
+        {children}
+      </div>
+      <div className='back' onClick={handleClick}></div>
     </StyledCard>
   );
 };
 
 const StyledCard = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
   border-radius: 5px;
   cursor: pointer;
-
-  /* &.wrong {
-    background-color: #ff5656;
-  }
-
-  &.correct {
-    background-color: #52bd52;
-  } */
+  position: relative;
 
   .front {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
     font-size: 3.5rem;
     position: absolute;
-    /* transform: rotateY(90deg); */
+    transform: rotateY(90deg);
     transition: all ease-in 0.2s;
   }
 
   &.flipped .front {
-    transform: translateY(0deg);
+    transform: rotateY(0deg);
     transition-delay: 0.2s;
+  }
+
+  .matched {
+    background-color: #52bd52;
+  }
+
+  .wrong {
+    background-color: #ff5656;
   }
 
   .back {
@@ -47,6 +57,7 @@ const StyledCard = styled.div`
       linear-gradient(45deg, #eceddc 25%, transparent 25%);
     background-size: 30px 30px;
 
+    transform: rotateY(0deg);
     transition: all ease-in 0.2s;
     transition-delay: 0.2s;
   }

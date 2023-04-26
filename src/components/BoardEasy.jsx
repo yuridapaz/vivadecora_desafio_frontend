@@ -70,15 +70,19 @@ const emojiList = [
 
 export const BoardEasy = () => {
   const [cards, setCards] = useState([
-    { hexCode: '127890', matched: false },
-    { hexCode: '127929', matched: false },
-    { hexCode: '127952', matched: false },
-    { hexCode: '127952', matched: false },
+    { hexCode: '127890', matched: false, id: Math.random() },
+    { hexCode: '127890', matched: false, id: Math.random() },
+    { hexCode: '127952', matched: false, id: Math.random() },
+    { hexCode: '127952', matched: false, id: Math.random() },
   ]);
   const [movements, setMovements] = useState(0);
   const [choiceOne, setChoiceOne] = useState(null);
   const [choiceTwo, setChoiceTwo] = useState(null);
-  const [flipped, setFlipped] = useState(false);
+  const [wrong, setWrong] = useState(false);
+
+  useEffect(() => {
+    shuffleCards();
+  }, []);
 
   // sortCards
   const shuffleCards = () => {
@@ -86,13 +90,13 @@ export const BoardEasy = () => {
       // Sort() a lista completa de emojis para ter muitas opções
       .sort(() => Math.random() - 0.5)
       // Pegar os 2 primeiros elementos da lista
-      .slice(0, 2)
-      // Modificar os elementos e trazer a chave 'status'
-      .map((emoji) => ({ hexCode: emoji, matched: false }));
-
+      .slice(0, 2);
+    // Modificar os elementos e trazer a chave 'status'
+    // .map((emoji) => ({ hexCode: emoji, matched: false }));
     // Pega os 2 emojis selecionados, adiciona a lista do jogo e faz um novo sort()
-    const newGameEmojis = [...newEmojis, ...newEmojis].sort(() => Math.random() - 0.5);
-
+    const newGameEmojis = [...newEmojis, ...newEmojis]
+      .sort(() => Math.random() - 0.5)
+      .map((emoji) => ({ hexCode: emoji, matched: false, id: Math.random() }));
     // Atualiza o estado com os novos cards com emojis
     setCards(newGameEmojis);
     setMovements(0);
@@ -101,8 +105,33 @@ export const BoardEasy = () => {
 
   // handleClick
   const handleChoice = (card) => {
-    choiceOne ? setChoiceOne(card) : setChoiceTwo(card);
+    if (choiceOne && choiceTwo) return;
+    choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
   };
+
+  //
+  useEffect(() => {
+    if (choiceOne && choiceTwo) {
+      if (choiceOne.hexCode === choiceTwo.hexCode) {
+        setCards((prev) => {
+          return prev.map((card) => {
+            if (card.hexCode === choiceOne.hexCode) {
+              return { ...card, matched: true };
+            } else {
+              return card;
+            }
+          });
+        });
+        resetTurn();
+      } else {
+        setWrong(true);
+        setTimeout(() => {
+          resetTurn();
+          setWrong(false);
+        }, 1000);
+      }
+    }
+  }, [choiceOne, choiceTwo]);
 
   // resetTurn
   const resetTurn = () => {
@@ -110,8 +139,6 @@ export const BoardEasy = () => {
     setChoiceTwo(null);
     setMovements((prev) => prev + 1);
   };
-
-  useEffect(() => {}, []);
 
   return (
     <BoardEasyStyle>
@@ -126,9 +153,10 @@ export const BoardEasy = () => {
           cards.map((card) => {
             return (
               <CardComponent
-                key={Math.random()}
+                key={card.id}
                 card={card}
-                flipped={flipped}
+                flipped={card === choiceOne || card === choiceTwo || card.matched}
+                wrong={wrong}
                 handleChoice={handleChoice}
               >
                 {String.fromCodePoint(card.hexCode)}
@@ -141,9 +169,6 @@ export const BoardEasy = () => {
           Nível: <span>Fácil - 14</span>
         </p>
       </div>
-      <button className='restart_icon' onClick={shuffleCards}>
-        RESET GAME
-      </button>
     </BoardEasyStyle>
   );
 };
