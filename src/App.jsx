@@ -12,7 +12,6 @@ function App() {
           </g>
         </svg>
       </header>
-
       <Outlet />
     </div>
   );

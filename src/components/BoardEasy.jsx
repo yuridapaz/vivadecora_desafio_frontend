@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
-import { CardComponent } from './CardComponent';
 import { useState } from 'react';
+import { useEffect } from 'react';
+import { CardComponent } from './CardComponent';
 
 // Mock
 const emojiList = [
@@ -67,25 +69,100 @@ const emojiList = [
 ];
 
 export const BoardEasy = () => {
-  const [cards, setCards] = useState([]);
+  const [cards, setCards] = useState([
+    { hexCode: '127890', matched: false, id: Math.random() },
+    { hexCode: '127890', matched: false, id: Math.random() },
+    { hexCode: '127952', matched: false, id: Math.random() },
+    { hexCode: '127952', matched: false, id: Math.random() },
+  ]);
   const [movements, setMovements] = useState(0);
+  const [choiceOne, setChoiceOne] = useState(null);
+  const [choiceTwo, setChoiceTwo] = useState(null);
+  const [wrong, setWrong] = useState(false);
 
-  const handleCards = () => {
-    const shuffleEmojis = [...emojiList].sort(() => Math.random() - 0.5);
+  useEffect(() => {
+    shuffleCards();
+  }, []);
+
+  // sortCards
+  const shuffleCards = () => {
+    const newEmojis = emojiList
+      // Sort() a lista completa de emojis para ter muitas opções
+      .sort(() => Math.random() - 0.5)
+      // Pegar os 2 primeiros elementos da lista
+      .slice(0, 2);
+    // Modificar os elementos e trazer a chave 'status'
+    // .map((emoji) => ({ hexCode: emoji, matched: false }));
+    // Pega os 2 emojis selecionados, adiciona a lista do jogo e faz um novo sort()
+    const newGameEmojis = [...newEmojis, ...newEmojis]
+      .sort(() => Math.random() - 0.5)
+      .map((emoji) => ({ hexCode: emoji, matched: false, id: Math.random() }));
+    // Atualiza o estado com os novos cards com emojis
+    setCards(newGameEmojis);
+    setMovements(0);
+    return;
   };
 
-  handleCards();
+  // handleClick
+  const handleChoice = (card) => {
+    if (choiceOne && choiceTwo) return;
+    choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
+  };
+
+  //
+  useEffect(() => {
+    if (choiceOne && choiceTwo) {
+      if (choiceOne.hexCode === choiceTwo.hexCode) {
+        setCards((prev) => {
+          return prev.map((card) => {
+            if (card.hexCode === choiceOne.hexCode) {
+              return { ...card, matched: true };
+            } else {
+              return card;
+            }
+          });
+        });
+        resetTurn();
+      } else {
+        setWrong(true);
+        setTimeout(() => {
+          resetTurn();
+          setWrong(false);
+        }, 1000);
+      }
+    }
+  }, [choiceOne, choiceTwo]);
+
+  // resetTurn
+  const resetTurn = () => {
+    setChoiceOne(null);
+    setChoiceTwo(null);
+    setMovements((prev) => prev + 1);
+  };
+
   return (
     <BoardEasyStyle>
       <div className='upper_content'>
         <p className='movements'>{movements} movimentos</p>
-        <span className='upper_icon'>🔄</span>
+        <button className='restart_icon' onClick={shuffleCards}>
+          🔄
+        </button>
       </div>
       <div className='board_container'>
-        <CardComponent>{String.fromCodePoint(emojiList[2])}</CardComponent>
-        <CardComponent>{String.fromCodePoint(emojiList[59])}</CardComponent>
-        <CardComponent>{String.fromCodePoint(emojiList[32])}</CardComponent>
-        <CardComponent>{String.fromCodePoint(emojiList[30])}</CardComponent>
+        {cards &&
+          cards.map((card) => {
+            return (
+              <CardComponent
+                key={card.id}
+                card={card}
+                flipped={card === choiceOne || card === choiceTwo || card.matched}
+                wrong={wrong}
+                handleChoice={handleChoice}
+              >
+                {String.fromCodePoint(card.hexCode)}
+              </CardComponent>
+            );
+          })}
       </div>
       <div className='lower_content'>
         <p className='difficulty'>
@@ -99,6 +176,7 @@ export const BoardEasy = () => {
 const BoardEasyStyle = styled.div`
   color: #fff;
   width: 300px;
+  height: 400px;
 
   .upper_content {
     display: flex;
@@ -106,8 +184,12 @@ const BoardEasyStyle = styled.div`
     padding: 0 20px;
     font-size: 1.2rem;
     font-weight: 700;
-    .upper_icon {
+    .restart_icon {
+      background: none;
+      outline: none;
+      border: none;
       font-size: 1.5rem;
+      cursor: pointer;
     }
   }
 
