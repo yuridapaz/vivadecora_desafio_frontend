@@ -7,7 +7,7 @@ export const ButtonStyled = styled.button`
   border: none;
   border-radius: 10px;
   box-shadow: 3px 3px #000000b4;
-  color: ${(props) => props.btnColor || '#000000'};
+  color: ${(props) => props.color || '#000000'};
   font-size: 1.2rem;
   font-weight: bold;
 
