@@ -2,7 +2,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { CardComponent } from './CardComponent';
+import { CardComponent } from '../card';
 
 // Mock
 const emojiList = [

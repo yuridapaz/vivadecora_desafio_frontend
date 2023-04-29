@@ -1,10 +1,10 @@
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { ButtonStyled } from '../button';
+import LevelContainer from './styles';
 
-const BoardLevels = () => {
+export const BoardLevels = () => {
   return (
-    <BoardLevelsStyle>
+    <LevelContainer>
       <Link className='board_link' to='/facil'>
         <ButtonStyled color='green'>👶 Fácil </ButtonStyled>
       </Link>
@@ -14,22 +14,6 @@ const BoardLevels = () => {
       <Link className='board_link' to='/dificil'>
         <ButtonStyled color='red'>🤯 Difícil</ButtonStyled>
       </Link>
-    </BoardLevelsStyle>
+    </LevelContainer>
   );
 };
-
-export default BoardLevels;
-
-const BoardLevelsStyle = styled.div`
-  width: 80%;
-  max-width: 400px;
-  height: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  .board_link {
-    align-self: center;
-    text-decoration: none;
-  }
-`;
