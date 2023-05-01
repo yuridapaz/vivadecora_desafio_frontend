@@ -1,22 +1,6 @@
-/* eslint-disable react/prop-types */
 import styled from 'styled-components';
 
-export const CardComponent = ({ children, handleChoice, flipped, card, wrong }) => {
-  const handleClick = () => {
-    handleChoice(card);
-  };
-
-  return (
-    <StyledCard className={flipped ? 'flipped' : ''}>
-      <div className={`front ${card.matched ? 'matched' : ''} ${wrong ? 'wrong' : ''}  `}>
-        {children}
-      </div>
-      <div className='back' onClick={handleClick}></div>
-    </StyledCard>
-  );
-};
-
-const StyledCard = styled.div`
+const CardComponentS = styled.div`
   border-radius: 5px;
   cursor: pointer;
   position: relative;
@@ -50,7 +34,7 @@ const StyledCard = styled.div`
   .back {
     width: 100%;
     height: 100%;
-    border-radius: 5px;
+    /* border-radius: ${({ theme }) => theme.borderRadius.xs}; */
     background: linear-gradient(135deg, #eceddc 25%, transparent 25%),
       linear-gradient(225deg, #eceddc 25%, transparent 25%),
       linear-gradient(315deg, #eceddc 25%, transparent 25%),
@@ -67,3 +51,5 @@ const StyledCard = styled.div`
     transition-delay: 0s;
   }
 `;
+
+export default CardComponentS;

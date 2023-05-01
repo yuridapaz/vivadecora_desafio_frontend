@@ -1,10 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
 import App from './App';
+import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import './index.css';
-import BoardLevels from './components/BoardLevels';
-import { BoardEasy } from './components/BoardEasy';
+import { BoardLevels } from './components/levels';
+import { BoardEasy } from './components/board';
+import GlobalStyle from './styles/Global';
+import { ThemeProvider } from 'styled-components';
+import { theme } from './styles/Theme';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +27,9 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <GlobalStyle />
+    <ThemeProvider theme={theme}>
+      <RouterProvider router={router} />
+    </ThemeProvider>
   </React.StrictMode>
 );
