@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-import CardComponentS from './styles';
+import CardStyled from './styles';
 
 export const CardComponent = ({ children, handleChoice, flipped, card, wrong }) => {
   const handleClick = () => {
@@ -8,11 +8,11 @@ export const CardComponent = ({ children, handleChoice, flipped, card, wrong }) 
   };
 
   return (
-    <CardComponentS className={flipped ? 'flipped' : ''}>
+    <CardStyled className={flipped ? 'flipped' : ''}>
       <div className={`front ${card.matched ? 'matched' : ''} ${wrong ? 'wrong' : ''}  `}>
         {children}
       </div>
       <div className='back' onClick={handleClick}></div>
-    </CardComponentS>
+    </CardStyled>
   );
 };

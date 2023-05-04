@@ -6,10 +6,14 @@ export const theme = {
     secondaryTextColor: '#777777',
     black: '#000000',
     white: '#ffffff',
+    red: '#ff1c1c',
     card: {
       background: 'blue',
       backgroundCorrect: '#52bd52',
       backgroundWrong: '#ff5656',
+      // precisa ficar em uma linha única
+      cardBackground:
+        'linear-gradient(135deg, #eceddc 25%, transparent 25%),linear-gradient(225deg, #eceddc 25%, transparent 25%),linear-gradient(315deg, #eceddc 25%, transparent 25%),linear-gradient(45deg, #eceddc 25%, transparent 25%)',
     },
   },
   boxShadow: '4px 4px #000000b4',
@@ -20,7 +24,7 @@ export const theme = {
     lg: '16px',
   },
   fonts: {
-    roboto: " 'Roboto', sans-serif ",
+    roboto: "'Roboto', sans-serif ",
   },
   spacing: {
     xxxs: '4px',
