@@ -4,70 +4,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { CardComponent } from '../card';
 import { BoardComponent } from './styles';
-
-// Mock
-const emojiList = [
-  '9200',
-  '9889',
-  '9917',
-  '9924',
-  '11088',
-  '127770',
-  '127774',
-  '127775',
-  '127797',
-  '127800',
-  '127804',
-  '127817',
-  '127821',
-  '127820',
-  '127826',
-  '127838',
-  '127846',
-  '127852',
-  '127851',
-  '127868',
-  '127875',
-  '127877',
-  '127880',
-  '127881',
-  '127890',
-  '127929',
-  '127936',
-  '127952',
-  '127968',
-  '128001',
-  '128008',
-  '128018',
-  '128010',
-  '128022',
-  '128027',
-  '128028',
-  '128029',
-  '128039',
-  '128055',
-  '128056',
-  '128059',
-  '128063',
-  '128123',
-  '128154',
-  '128153',
-  '128156',
-  '128293',
-  '128512',
-  '128526',
-  '128640',
-  '128663',
-  '128690',
-  '129302',
-  '129365',
-  '129382',
-  '129409',
-  '129419',
-  '129497',
-  '129430',
-  '129412',
-];
+import emojiData from '../../data/emojiData.json';
 
 export const BoardEasy = () => {
   const [cards, setCards] = useState([]);
@@ -76,18 +13,26 @@ export const BoardEasy = () => {
   const [choiceTwo, setChoiceTwo] = useState(null);
   const [wrong, setWrong] = useState(false);
 
+  const venceu = cards.every((card) => card.matched === true);
+  console.log(venceu);
+
   useEffect(() => {
     shuffleCards();
   }, []);
 
   // sortCards
   const shuffleCards = () => {
-    const newEmojis = emojiList.sort(() => Math.random() - 0.5).slice(0, 2);
-    const newGameEmojis = [...newEmojis, ...newEmojis]
-      .sort(() => Math.random() - 0.5)
-      .map((emoji) => ({ hexCode: emoji, matched: false, id: Math.random() }));
+    resetTurn();
 
-    setCards(newGameEmojis);
+    const sortEmojis = emojiData.sort(() => Math.random() - 0.5).slice(0, 2);
+    const gameEmojis = [...sortEmojis, ...sortEmojis]
+      .map((emoji) => ({
+        ...emoji,
+        matched: false,
+      }))
+      .sort(() => Math.random() - 0.5);
+
+    setCards(gameEmojis);
     setMovements(0);
     return;
   };
@@ -142,7 +87,7 @@ export const BoardEasy = () => {
           cards.map((card) => {
             return (
               <CardComponent
-                key={card.id}
+                key={card.id + Math.random()}
                 card={card}
                 flipped={card === choiceOne || card === choiceTwo || card.matched}
                 wrong={wrong}

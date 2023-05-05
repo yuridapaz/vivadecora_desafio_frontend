@@ -23,7 +23,7 @@ export const BoardComponent = styled.div`
   .board_container {
     width: 300px;
     height: 300px;
-    padding: 1rem;
+    padding: ${({ theme }) => theme.spacing.xxs};
     background-color: ${({ theme }) => theme.colors.white};
     border-radius: ${({ theme }) => theme.borderRadius.xs};
     margin: 12px auto;
@@ -31,7 +31,7 @@ export const BoardComponent = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    gap: 1rem;
+    gap: ${({ theme }) => theme.spacing.xxs};
   }
 
   .difficulty {

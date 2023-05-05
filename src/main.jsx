@@ -27,8 +27,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
+    <GlobalStyle />
     <ThemeProvider theme={theme}>
-      <GlobalStyle />
       <RouterProvider router={router} />
     </ThemeProvider>
   </React.StrictMode>
