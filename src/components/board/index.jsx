@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { CardComponent } from '../card';
 import { BoardComponent } from './styles';
 import emojiData from '../../data/emojiData.json';
+import WinnerContainer from '../winnerContainer';
 
 export const BoardEasy = () => {
   const [cards, setCards] = useState([]);
@@ -12,9 +13,7 @@ export const BoardEasy = () => {
   const [choiceOne, setChoiceOne] = useState(null);
   const [choiceTwo, setChoiceTwo] = useState(null);
   const [wrong, setWrong] = useState(false);
-
-  const venceu = cards.every((card) => card.matched === true);
-  console.log(venceu);
+  const winMatch = cards.every((card) => card.matched === true);
 
   useEffect(() => {
     shuffleCards();
@@ -75,34 +74,40 @@ export const BoardEasy = () => {
   };
 
   return (
-    <BoardComponent>
-      <div className='upper_content'>
-        <p className='movements'>{movements} movimentos</p>
-        <button className='restart_icon' onClick={shuffleCards}>
-          🔄
-        </button>
-      </div>
-      <div className='board_container'>
-        {cards &&
-          cards.map((card) => {
-            return (
-              <CardComponent
-                key={card.id + Math.random()}
-                card={card}
-                flipped={card === choiceOne || card === choiceTwo || card.matched}
-                wrong={wrong}
-                handleChoice={handleChoice}
-              >
-                {String.fromCodePoint(card.hexCode)}
-              </CardComponent>
-            );
-          })}
-      </div>
-      <div className='lower_content'>
-        <p className='difficulty'>
-          Nível: <span>Fácil - 14</span>
-        </p>
-      </div>
-    </BoardComponent>
+    <>
+      {winMatch ? (
+        <WinnerContainer movements={movements} onClick={shuffleCards} />
+      ) : (
+        <BoardComponent>
+          <div className='upper_content'>
+            <p className='movements'>{movements} movimentos</p>
+            <button className='restart_icon' onClick={shuffleCards}>
+              🔄
+            </button>
+          </div>
+          <div className='board_container'>
+            {cards &&
+              cards.map((card) => {
+                return (
+                  <CardComponent
+                    key={card.id + Math.random()}
+                    card={card}
+                    flipped={card === choiceOne || card === choiceTwo || card.matched}
+                    wrong={wrong}
+                    handleChoice={handleChoice}
+                  >
+                    {String.fromCodePoint(card.hexCode)}
+                  </CardComponent>
+                );
+              })}
+          </div>
+          <div className='lower_content'>
+            <p className='difficulty'>
+              Nível: <span>Fácil - 14</span>
+            </p>
+          </div>
+        </BoardComponent>
+      )}
+    </>
   );
 };
