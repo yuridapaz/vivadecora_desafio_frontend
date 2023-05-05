@@ -7,7 +7,6 @@ const LevelContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-
   .board_link {
     align-self: center;
     text-decoration: none;
