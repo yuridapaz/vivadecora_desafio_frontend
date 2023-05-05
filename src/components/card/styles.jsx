@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const CardComponentS = styled.div`
-  border-radius: 5px;
+  border-radius: ${({ theme }) => theme.borderRadius.xs};
   cursor: pointer;
   position: relative;
 
@@ -11,7 +11,7 @@ const CardComponentS = styled.div`
     align-items: center;
     width: 100%;
     height: 100%;
-    border-radius: 5px;
+    border-radius: ${({ theme }) => theme.borderRadius.xs};
     font-size: 3.5rem;
     position: absolute;
     transform: rotateY(90deg);
@@ -34,13 +34,9 @@ const CardComponentS = styled.div`
   .back {
     width: 100%;
     height: 100%;
-    /* border-radius: ${({ theme }) => theme.borderRadius.xs}; */
-    background: linear-gradient(135deg, #eceddc 25%, transparent 25%),
-      linear-gradient(225deg, #eceddc 25%, transparent 25%),
-      linear-gradient(315deg, #eceddc 25%, transparent 25%),
-      linear-gradient(45deg, #eceddc 25%, transparent 25%);
+    border-radius: ${({ theme }) => theme.borderRadius.xs};
+    background: ${({ theme }) => theme.colors.background.cardFlippedBackground};
     background-size: 30px 30px;
-
     transform: rotateY(0deg);
     transition: all ease-in 0.2s;
     transition-delay: 0.2s;

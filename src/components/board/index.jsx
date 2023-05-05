@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import styled from 'styled-components';
+
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { CardComponent } from '../card';
+import { BoardComponent } from './styles';
 
 // Mock
 const emojiList = [
@@ -129,7 +130,7 @@ export const BoardEasy = () => {
   };
 
   return (
-    <BoardEasyStyle>
+    <BoardComponent>
       <div className='upper_content'>
         <p className='movements'>{movements} movimentos</p>
         <button className='restart_icon' onClick={shuffleCards}>
@@ -157,53 +158,6 @@ export const BoardEasy = () => {
           Nível: <span>Fácil - 14</span>
         </p>
       </div>
-    </BoardEasyStyle>
+    </BoardComponent>
   );
 };
-
-const BoardEasyStyle = styled.div`
-  color: #fff;
-  width: 300px;
-  height: 400px;
-
-  .upper_content {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 20px;
-    font-size: 1.2rem;
-    font-weight: 700;
-    .restart_icon {
-      background: none;
-      outline: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-  }
-
-  .board_container {
-    width: 300px;
-    height: 300px;
-    padding: 1rem;
-    background-color: #fff;
-    border-radius: 5px;
-    margin: 12px auto;
-    box-shadow: 4px 4px #000000b4;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 1rem;
-  }
-
-  .difficulty {
-    text-align: center;
-    margin-top: 30px;
-    span {
-      background-color: #fff;
-      padding: 5px;
-      border-radius: 5px;
-      color: #ff1c1c;
-      font-weight: 600;
-    }
-  }
-`;
