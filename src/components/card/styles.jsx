@@ -11,11 +11,12 @@ const CardComponentS = styled.div`
     align-items: center;
     width: 100%;
     height: 100%;
+    background-color: ${({ theme }) => theme.colors.background.cardCurrentBackground};
     border-radius: ${({ theme }) => theme.borderRadius.xs};
     font-size: 3.5rem;
     position: absolute;
     transform: rotateY(90deg);
-    transition: all ease-in 0.2s;
+    transition: all ease 0.2s;
   }
 
   &.flipped .front {
@@ -27,7 +28,7 @@ const CardComponentS = styled.div`
     background-color: #52bd52;
   }
 
-  .wrong {
+  .wrongCard {
     background-color: #ff5656;
   }
 
@@ -36,15 +37,15 @@ const CardComponentS = styled.div`
     height: 100%;
     border-radius: ${({ theme }) => theme.borderRadius.xs};
     background: ${({ theme }) => theme.colors.background.cardFlippedBackground};
-    background-size: 30px 30px;
+    background-size: 34px 34px;
     transform: rotateY(0deg);
-    transition: all ease-in 0.2s;
+    transition: all ease 0.2s;
     transition-delay: 0.2s;
   }
 
   &.flipped .back {
     transform: rotateY(90deg);
-    transition-delay: 0s;
+    transition-delay: 0;
   }
 `;
 

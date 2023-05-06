@@ -1,6 +1,30 @@
 import styled from 'styled-components';
 
-export const BoardComponent = styled.div`
+const handleBoardSize = (boardLevel) => {
+  switch (boardLevel) {
+    case 'easy':
+      return 'grid-template-columns: repeat(2, 1fr);grid-template-rows: repeat(2, 1fr);';
+    case 'medium':
+      return 'grid-template-columns: repeat(3, 1fr);grid-template-rows: repeat(3, 1fr);';
+    case 'hard':
+      return 'grid-template-columns: repeat(4, 1fr);grid-template-rows: repeat(4, 1fr);';
+  }
+};
+
+const handleBoardNaming = (boardLevel) => {
+  switch (boardLevel) {
+    case 'easy':
+      return "content: 'Fácil'";
+
+    case 'medium':
+      return "content: 'Médio'";
+
+    case 'hard':
+      return "content: 'Difícil'";
+  }
+};
+
+export const StyledBoardComponent = styled.div`
   color: ${({ theme }) => theme.colors.white};
   width: 300px;
   height: 400px;
@@ -23,15 +47,14 @@ export const BoardComponent = styled.div`
   .board_container {
     width: 300px;
     height: 300px;
-    padding: 1rem;
+    padding: ${({ theme }) => theme.spacing.xxs};
     background-color: ${({ theme }) => theme.colors.white};
     border-radius: ${({ theme }) => theme.borderRadius.xs};
     margin: 12px auto;
     box-shadow: ${({ theme }) => theme.boxShadow};
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 1rem;
+    ${({ boardLevel }) => handleBoardSize(boardLevel)}
+    gap: ${({ theme }) => theme.spacing.xxs};
   }
 
   .difficulty {
@@ -43,6 +66,10 @@ export const BoardComponent = styled.div`
       border-radius: ${({ theme }) => theme.borderRadius.xs};
       color: ${({ theme }) => theme.colors.red};
       font-weight: 600;
+
+      &::before {
+        ${({ boardLevel }) => handleBoardNaming(boardLevel)};
+      }
     }
   }
 `;

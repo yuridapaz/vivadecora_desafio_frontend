@@ -5,6 +5,7 @@ export const theme = {
     black: '#000000',
     white: '#fff',
     red: '#ff1c1c',
+    green: '#52bd52',
     background: {
       appBackground: 'linear-gradient(-45deg, #ff1c1c, #ff5656)',
       boardBackground: '#fff',
@@ -35,7 +36,7 @@ export const theme = {
     lg: '1.2rem',
     xl: '1.5rem',
     xxl: '2rem',
-    xxxl: '2.5rem',
+    xxxl: '3rem',
   },
   spacing: {
     xxxs: '4px',
