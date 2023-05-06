@@ -6,13 +6,13 @@ export const BoardLevels = () => {
   return (
     <LevelContainer>
       <Link className='board_link' to='/facil'>
-        <ButtonStyled color='green'>👶 Fácil </ButtonStyled>
+        <ButtonStyled boardLevel={'easy'}>👶 Fácil </ButtonStyled>
       </Link>
       <Link className='board_link' to='/medio'>
-        <ButtonStyled>👦 Normal</ButtonStyled>
+        <ButtonStyled boardLevel={'medium'}>👦 Normal</ButtonStyled>
       </Link>
       <Link className='board_link' to='/dificil'>
-        <ButtonStyled color='red'>🤯 Difícil</ButtonStyled>
+        <ButtonStyled boardLevel={'hard'}>🤯 Difícil</ButtonStyled>
       </Link>
     </LevelContainer>
   );

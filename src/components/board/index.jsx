@@ -9,7 +9,8 @@ import { StyledBoardComponent } from './styles';
 // Criar layout para os 3 tipos de jogos !!
 
 export const BoardComponent = ({ boardLevel }) => {
-  const { shuffleCards, resetTurn, findingCurrentGame } = useContext(GameContext);
+  const { shuffleCards, resetTurn, findingCurrentGame, gamerData, setGamerData } =
+    useContext(GameContext);
   const [cards, setCards] = useState([]);
   const [movements, setMovements] = useState(0);
   const [choiceOne, setChoiceOne] = useState(null);
@@ -24,7 +25,6 @@ export const BoardComponent = ({ boardLevel }) => {
 
   // sort cards and start game
   const startGame = () => {
-    // resetTurn();
     resetTurn(setChoiceOne, setChoiceTwo, setMovements);
     const gameEmojis = shuffleCards(boardLevel);
     setCards(gameEmojis);
@@ -69,7 +69,14 @@ export const BoardComponent = ({ boardLevel }) => {
 
   // handle Winning
   const handleWinning = () => {
-    currentGame.gameScore++;
+    gamerData.map((data) => {
+      if (data.gameLevel === currentGame.gameLevel) {
+        data.gameScore++;
+      }
+    });
+    const newGamerData = [...gamerData];
+    setGamerData(newGamerData);
+    console.log(newGamerData);
     startGame();
     return;
   };
