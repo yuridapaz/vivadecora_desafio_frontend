@@ -11,6 +11,19 @@ const handleBoardSize = (boardLevel) => {
   }
 };
 
+const handleBoardNaming = (boardLevel) => {
+  switch (boardLevel) {
+    case 'easy':
+      return "content: 'Fácil'";
+
+    case 'medium':
+      return "content: 'Médio'";
+
+    case 'hard':
+      return "content: 'Difícil'";
+  }
+};
+
 export const StyledBoardComponent = styled.div`
   color: ${({ theme }) => theme.colors.white};
   width: 300px;
@@ -53,6 +66,10 @@ export const StyledBoardComponent = styled.div`
       border-radius: ${({ theme }) => theme.borderRadius.xs};
       color: ${({ theme }) => theme.colors.red};
       font-weight: 600;
+
+      &::before {
+        ${({ boardLevel }) => handleBoardNaming(boardLevel)};
+      }
     }
   }
 `;

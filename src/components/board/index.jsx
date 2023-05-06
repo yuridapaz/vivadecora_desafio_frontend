@@ -9,13 +9,14 @@ import { StyledBoardComponent } from './styles';
 // Criar layout para os 3 tipos de jogos !!
 
 export const BoardComponent = ({ boardLevel }) => {
-  const { shuffleCards, resetTurn } = useContext(GameContext);
+  const { shuffleCards, resetTurn, findingCurrentGame } = useContext(GameContext);
   const [cards, setCards] = useState([]);
   const [movements, setMovements] = useState(0);
   const [choiceOne, setChoiceOne] = useState(null);
   const [choiceTwo, setChoiceTwo] = useState(null);
   const [wrongCard, setWrongCard] = useState(false);
   const winMatch = cards.every((card) => card.matched === true);
+  const currentGame = findingCurrentGame(boardLevel);
 
   useEffect(() => {
     startGame();
@@ -66,10 +67,17 @@ export const BoardComponent = ({ boardLevel }) => {
     return;
   };
 
+  // handle Winning
+  const handleWinning = () => {
+    currentGame.gameScore++;
+    startGame();
+    return;
+  };
+
   return (
     <>
       {winMatch ? (
-        <WinnerContainer movements={movements} onClick={startGame} />
+        <WinnerContainer movements={movements} onClick={handleWinning} />
       ) : (
         <StyledBoardComponent boardLevel={boardLevel}>
           <div className='upper_content'>
@@ -96,7 +104,7 @@ export const BoardComponent = ({ boardLevel }) => {
           </div>
           <div className='lower_content'>
             <p className='difficulty'>
-              Nível: <span>Fácil - 14</span>
+              Nível: <span> - {currentGame.gameScore} </span>
             </p>
           </div>
         </StyledBoardComponent>

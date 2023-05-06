@@ -4,8 +4,7 @@ import emojiData from '../data/emojiData.json';
 export const GameContext = createContext([]);
 
 const GameContextProvider = ({ children }) => {
-  // Criar um object contento as informações das jogadas e níveis //
-  const [gamerData, setgamerData] = useState([
+  const [gamerData, setGamerData] = useState([
     { gameLevel: 'easy', gameScore: 0 },
     { gameLevel: 'medium', gameScore: 0 },
     { gameLevel: 'hard', gameScore: 0 },
@@ -43,8 +42,17 @@ const GameContextProvider = ({ children }) => {
     setMovements((prev) => prev + 1);
   };
 
+  //
+  const findingCurrentGame = (boardLevel) => {
+    return gamerData.find((data) => data.gameLevel === boardLevel);
+  };
+
   return (
-    <GameContext.Provider value={{ shuffleCards, resetTurn }}>{children}</GameContext.Provider>
+    <GameContext.Provider
+      value={{ shuffleCards, resetTurn, gamerData, setGamerData, findingCurrentGame }}
+    >
+      {children}
+    </GameContext.Provider>
   );
 };
 
