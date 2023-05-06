@@ -28,7 +28,7 @@ const CardComponentS = styled.div`
     background-color: #52bd52;
   }
 
-  .wrong {
+  .wrongCard {
     background-color: #ff5656;
   }
 
@@ -38,7 +38,6 @@ const CardComponentS = styled.div`
     border-radius: ${({ theme }) => theme.borderRadius.xs};
     background: ${({ theme }) => theme.colors.background.cardFlippedBackground};
     background-size: 34px 34px;
-
     transform: rotateY(0deg);
     transition: all ease 0.2s;
     transition-delay: 0.2s;

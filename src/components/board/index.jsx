@@ -1,49 +1,48 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { CardComponent } from '../card';
-import { BoardComponent } from './styles';
-import emojiData from '../../data/emojiData.json';
 import WinnerContainer from '../winnerContainer';
+import { GameContext } from '../../context/GameContext';
+import { useContext } from 'react';
+import { StyledBoardComponent } from './styles';
 
-export const BoardEasy = () => {
+// Criar layout para os 3 tipos de jogos !!
+
+export const BoardComponent = ({ boardLevel }) => {
+  const { shuffleCards, resetTurn } = useContext(GameContext);
   const [cards, setCards] = useState([]);
   const [movements, setMovements] = useState(0);
   const [choiceOne, setChoiceOne] = useState(null);
   const [choiceTwo, setChoiceTwo] = useState(null);
-  const [wrong, setWrong] = useState(false);
+  const [wrongCard, setWrongCard] = useState(false);
   const winMatch = cards.every((card) => card.matched === true);
 
   useEffect(() => {
-    shuffleCards();
+    startGame();
   }, []);
 
-  // sortCards
-  const shuffleCards = () => {
-    resetTurn();
-
-    const sortEmojis = emojiData.sort(() => Math.random() - 0.5).slice(0, 2);
-    const gameEmojis = [...sortEmojis, ...sortEmojis]
-      .map((emoji) => ({
-        ...emoji,
-        matched: false,
-      }))
-      .sort(() => Math.random() - 0.5);
-
+  // sort cards and start game
+  const startGame = () => {
+    // resetTurn();
+    resetTurn(setChoiceOne, setChoiceTwo, setMovements);
+    const gameEmojis = shuffleCards(boardLevel);
     setCards(gameEmojis);
     setMovements(0);
     return;
   };
 
-  // handleClick
+  useEffect(() => {
+    handleComparison();
+  }, [choiceOne, choiceTwo]);
+
+  // setChoice
   const handleChoice = (card) => {
     if (choiceOne && choiceTwo) return;
     choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
   };
 
-  // handleChoice
-  useEffect(() => {
+  // handleComparison
+  const handleComparison = () => {
     if (choiceOne && choiceTwo) {
       if (choiceOne.hexCode === choiceTwo.hexCode) {
         setCards((prev) => {
@@ -55,33 +54,27 @@ export const BoardEasy = () => {
             }
           });
         });
-        resetTurn();
+        resetTurn(setChoiceOne, setChoiceTwo, setMovements);
       } else {
-        setWrong(true);
+        setWrongCard(true);
         setTimeout(() => {
-          resetTurn();
-          setWrong(false);
+          resetTurn(setChoiceOne, setChoiceTwo, setMovements);
+          setWrongCard(false);
         }, 1000);
       }
     }
-  }, [choiceOne, choiceTwo]);
-
-  // resetTurn
-  const resetTurn = () => {
-    setChoiceOne(null);
-    setChoiceTwo(null);
-    setMovements((prev) => prev + 1);
+    return;
   };
 
   return (
     <>
       {winMatch ? (
-        <WinnerContainer movements={movements} onClick={shuffleCards} />
+        <WinnerContainer movements={movements} onClick={startGame} />
       ) : (
-        <BoardComponent>
+        <StyledBoardComponent boardLevel={boardLevel}>
           <div className='upper_content'>
             <p className='movements'>{movements} movimentos</p>
-            <button className='restart_icon' onClick={shuffleCards}>
+            <button className='restart_icon' onClick={startGame}>
               🔄
             </button>
           </div>
@@ -93,8 +86,8 @@ export const BoardEasy = () => {
                     key={card.id + Math.random()}
                     card={card}
                     flipped={card === choiceOne || card === choiceTwo || card.matched}
-                    wrong={wrong}
-                    handleChoice={handleChoice}
+                    wrongCard={wrongCard}
+                    onClick={() => handleChoice(card)}
                   >
                     {String.fromCodePoint(card.hexCode)}
                   </CardComponent>
@@ -106,7 +99,7 @@ export const BoardEasy = () => {
               Nível: <span>Fácil - 14</span>
             </p>
           </div>
-        </BoardComponent>
+        </StyledBoardComponent>
       )}
     </>
   );
