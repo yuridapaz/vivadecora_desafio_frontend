@@ -1,16 +1,20 @@
 import '@testing-library/jest-dom';
-import { render } from '@testing-library/react';
-import { describe, expect, test } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { describe, test } from 'vitest';
+
 import { ButtonStyled } from '.';
 import { theme } from '../../styles/Theme';
 
 describe('Button', () => {
-  test('Button should render', () => {
-    const { debug } = render(
-      <ButtonStyled theme={theme} boardLevel={'easy'}>
-        Test Btn
+  beforeEach(() => {
+    const { debug, getByTestId } = render(
+      <ButtonStyled theme={theme} data-testid='button-test-id'>
+        Texto
       </ButtonStyled>
     );
-    debug();
+  });
+
+  test('Should be able to render based on the children prop', () => {
+    expect(screen.getByTestId('button-test-id')).toHaveTextContent('Texto');
   });
 });
