@@ -1,0 +1,26 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Button with Styled Components > Should be able to present styled components properties 1`] = `
+.c0 {
+  width: 250px;
+  padding: 16px;
+  margin: 16px;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 4px 4px #000000b4;
+  color: #000000;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.c0:hover {
+  cursor: pointer;
+}
+
+<button
+  className="c0"
+  data-testid="button-test-id"
+>
+  Texto
+</button>
+`;
