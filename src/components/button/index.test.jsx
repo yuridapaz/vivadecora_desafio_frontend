@@ -1,13 +1,13 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import { describe, test } from 'vitest';
+import { describe, test, vi } from 'vitest';
 
 import { ButtonStyled } from '.';
 import { theme } from '../../styles/Theme';
 
 describe('Button', () => {
   beforeEach(() => {
-    const { debug, getByTestId } = render(
+    render(
       <ButtonStyled theme={theme} data-testid='button-test-id'>
         Texto
       </ButtonStyled>
